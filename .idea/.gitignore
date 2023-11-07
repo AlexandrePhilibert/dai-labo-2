@@ -6,3 +6,7 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+#Sonar lint
+/sonarlint/
+# Hotswap agent (JRebel)
+/hotswap_agent.xml
