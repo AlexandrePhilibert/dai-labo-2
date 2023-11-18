@@ -4,6 +4,7 @@ import ch.heigvd.commands.*;
 import ch.heigvd.commands.enums.DeclineReason;
 import ch.heigvd.exceptions.ParseException;
 import ch.heigvd.parser.CommandParser;
+import ch.heigvd.server.utils.IdProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,6 +12,7 @@ import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +27,8 @@ public class ClientHandler implements Runnable {
 
     public ClientHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
-        this.connectionId = "test-id";
+        // TODO: Change this ID with a randomized session id.
+        this.connectionId = IdProvider.getId();
         logger = LogManager.getLogger("ClientHandler {" + connectionId + "}");
     }
 
@@ -71,42 +74,37 @@ public class ClientHandler implements Runnable {
 
 
     private List<Command> apply(Command command) {
-        // We don't have access to pattern matching on switches
-        // Sadge :(
-        if (command instanceof Connect connect) {
-            if (!isConnected()) {
+        if (!isConnected()) {
+            if (command instanceof Connect connect) {
                 this.username = connect.getUsername();
                 return List.of(new Accept());
             } else {
-                return List.of(new Decline(DeclineReason.ALREADY_LOGGED_IN));
+                return List.of(new Decline(DeclineReason.NOT_CONNECTED));
             }
+        }
+
+        // The user is connected, we can do more things.
+        if (command instanceof Connect) {
+            return List.of(new Decline(DeclineReason.ALREADY_LOGGED_IN));
         } else if (command instanceof Send send) {
-            if (isConnected()) {
-                logger.info("{} sent a message to {}: {}", this.username, send.getGroup(), send.getMessage());
-                GroupManager.getGroup(send.getGroup())
-                        .post(this.username, send.getMessage());
+            logger.info("{} sent a message to {}: {}", this.username, send.getGroup(), send.getMessage());
+            GroupManager.getGroup(send.getGroup())
+                    .post(this.username, send.getMessage());
 
-                return List.of(new Acknowledge());
-            } else {
-                return List.of(new Decline(DeclineReason.NOT_CONNECTED));
-            }
+            return List.of(new Acknowledge());
         } else if (command instanceof Sync sync) {
-            if (isConnected()) {
-                List<Command> responses = new ArrayList<>(
-                        GroupManager.getGroup(sync.getTarget())
-                            .getAfter(sync.getInstant())
-                );
-                responses.add(new EndSync());
 
-                return responses;
-            } else {
-                return List.of(new Decline(DeclineReason.NOT_CONNECTED));
-            }
+            List<Command> responses = new ArrayList<>(
+                    GroupManager.getGroup(sync.getTarget())
+                            .getAfter(sync.getInstant())
+            );
+            responses.add(new EndSync());
+
+            return responses;
         } else {
             return List.of(new Decline(DeclineReason.UNSUPPORTED_COMMAND));
         }
     }
-
 
 
     private boolean isConnected() {
