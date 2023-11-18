@@ -1,12 +1,20 @@
 package ch.heigvd.commands;
 
+import ch.heigvd.commands.enums.DeclineReason;
 import ch.heigvd.exceptions.ParseException;
 
 public class Decline extends Command {
-    private final String reason;
+    private final DeclineReason reason;
+    private final String customDeclineReason;
 
-    public Decline(String reason) {
+    public Decline(DeclineReason reason) {
         this.reason = reason;
+        this.customDeclineReason = null;
+    }
+
+    public Decline(String customDeclineReason) {
+        this.reason = DeclineReason.CUSTOM;
+        this.customDeclineReason = customDeclineReason;
     }
 
 
@@ -16,11 +24,19 @@ public class Decline extends Command {
         if (split.length != 2) {
             throw new ParseException();
         }
-
-        return new Decline(split[1]);
+        DeclineReason reason = DeclineReason.from(split[1]);
+        if (reason != DeclineReason.CUSTOM) {
+            return new Decline(reason);
+        } else {
+            return new Decline(split[1]);
+        }
     }
 
     public String to() {
-        return "DECLINE " + reason;
+        if (reason != DeclineReason.CUSTOM) {
+            return "DECLINE " + reason.getCode();
+        } else {
+            return "DECLINE " + customDeclineReason;
+        }
     }
 }

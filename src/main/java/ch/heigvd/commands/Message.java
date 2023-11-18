@@ -26,8 +26,28 @@ public class Message extends Command {
             throw new ParseException();
         }
 
-        return new Message(split[1], split[2], Instant.ofEpochSecond(Long.parseLong(split[3])),
-                String.join(" ", Arrays.copyOfRange(split, 4, split.length)));
+        try {
+            return new Message(split[1], split[2], Instant.ofEpochSecond(Long.parseLong(split[3])),
+                    String.join(" ", Arrays.copyOfRange(split, 4, split.length)));
+        } catch (NumberFormatException e) {
+            throw new ParseException();
+        }
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public Instant getTimestamp() {
+        return timestamp;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
     public String to() {
