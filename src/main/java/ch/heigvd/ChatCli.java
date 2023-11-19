@@ -1,8 +1,7 @@
 package ch.heigvd;
 
-
 import ch.heigvd.cli.ClientCommand;
-import ch.heigvd.cli.ServerCommand;
+import ch.heigvd.server.Server;
 import picocli.CommandLine;
 
 @CommandLine.Command(
@@ -12,7 +11,7 @@ import picocli.CommandLine;
     description = "A Chat client for the CPT protocol",
     subcommands = {
         ClientCommand.class,
-        ServerCommand.class,
+        Server.class
     }
 )
 public class ChatCli {}

@@ -19,8 +19,11 @@ public class Connect extends Command {
         return new Connect(split[1]);
     }
 
-    @Override
-    public String toString() {
+    public String getUsername() {
+        return username;
+    }
+
+    public String to() {
         return "CONNECT " + username;
     }
 }
