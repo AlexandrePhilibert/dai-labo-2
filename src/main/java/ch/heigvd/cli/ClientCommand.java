@@ -2,8 +2,8 @@ package ch.heigvd.cli;
 
 import ch.heigvd.cli.instructions.Exit;
 import ch.heigvd.cli.instructions.Instruction;
-import ch.heigvd.commands.Connect;
-import ch.heigvd.commands.InstructionFactory;
+import ch.heigvd.cli.instructions.Login;
+import ch.heigvd.cli.instructions.InstructionFactory;
 import picocli.CommandLine;
 
 import java.io.*;
@@ -17,21 +17,22 @@ public class ClientCommand implements Callable<Integer> {
     @CommandLine.Option(names = {"-h", "--host"}, description = "The hostname", required = true)
     String hostname;
 
-    @CommandLine.Option(names = {"-p", "--port"}, description = "The port")
+    @CommandLine.Option(names = {"-p", "--port"}, description = "The port", defaultValue = "39168")
     int port;
 
     @CommandLine.Option(names = {"-u", "--username"}, required = true)
     String username;
 
-    private String recipient;
+    private ClientState state;
 
     private String getPrompt() {
-        return "(" + (recipient == null ? "None" : recipient) + "> ";
+        return "(" + (state.getRecipient() == null ? "None" : state.getRecipient()) + ") > ";
     }
 
     @Override
     public Integer call() throws RuntimeException, IOException {
         // TODO: Gracefully handle error
+
         try (
             Socket socket = new Socket(hostname, port);
             BufferedReader reader = new BufferedReader(
@@ -42,16 +43,19 @@ public class ClientCommand implements Callable<Integer> {
             );
             Scanner scanner = new Scanner(System.in)
         ) {
-            writer.write(new Connect(username).toString());
+            state = new ClientState(writer);
 
+            // Connect the user upon invocation
             InstructionFactory instructionFactory = new InstructionFactory();
-            Instruction instruction;
+            Instruction instruction = new Login(username);
+            instruction.exectue(state);
 
             do {
                 System.out.print(getPrompt());
 
                 String line = scanner.nextLine();
                 instruction = instructionFactory.parse(line);
+                instruction.exectue(state);
 
                 // TODO: Parse command and execute it
             } while (instruction.getClass() != Exit.class);
