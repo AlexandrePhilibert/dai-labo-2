@@ -72,6 +72,7 @@ The server MUST use the default reasons described in the table below where appli
 | ip_invalid          | The account is IP range protected, but the client IP does't matches.                             |  
 | already_logged_in   | The user has already sent a CONNECT command. Changing suernames is not supported by the protocol |  
 | unsupported_command | The server does not support this command                                                         |
+| invalid_command     | Unknown command, or invalid command format                                                       |
 
 New values MAY be added in a future revision of this document.
 
@@ -139,6 +140,8 @@ either:
 ENDSYNC  
 ```  
 
+Server to Client
+
 Terminates the `SYNC` request, indicating that all messages were sent successfully.
 
 The server MUST provide all messages before the time of the `SYNC` command, and MAY provide messages sent during the
@@ -146,14 +149,26 @@ transmission.
 
 ## Example diagram
 
-```mermaid  sequenceDiagram    
-    
-%% Handle connection  Client 1->>Server: CONNECT alexandre  %% EIther accept or decline the connection request  Server->>Client 1: ACCEPT  Server->>Client 1: DECLINE username_taken    
-    
-%% Send a message in a group  Client 1->>Server: SEND group1 Hello ceci est un test  %% Acknowledge that the server received the message  Server->>Client 1: ACK    
-    
-Client 2->>Server: SYNC group1 timestamp  Server->>Client 2: MSG group1 red timestamp Before joined  Server->>Client 2: MSG group1 alexandre timestamp Hello  Server->>Client 2: ENDSYNC    
-    
-%% Send a message to a user  Client 2->>Server: SEND alexandre Hello  Server->>Client 2: ACK    
-    
-%% Get all messages sent to the current username  Client 2->>Server: SYNC  Server->>Client 2: MSG red timestamp Private message  Server->>Client 2: ENDSYNC  ```
+```mermaid
+sequenceDiagram
+%% Handle connection
+    Client 1 ->> Server: CONNECT alexandre
+%% EIther accept or decline the connection request
+    Server ->> Client 1: ACCEPT
+    Server ->> Client 1: DECLINE username_taken
+%% Send a message in a group
+    Client 1 ->> Server: SEND group1 Hello ceci est un test
+%% Acknowledge that the server received the message
+    Server ->> Client 1: ACK
+    Client 2 ->> Server: SYNC group1 timestamp
+    Server ->> Client 2: MSG group1 red timestamp Before joined
+    Server ->> Client 2: MSG group1 alexandre timestamp Hello
+    Server ->> Client 2: ENDSYNC
+%% Send a message to a user
+    Client 2 ->> Server: SEND alexandre Hello
+    Server ->> Client 2: ACK
+%% Get all messages sent to the current username
+    Client 2 ->> Server: SYNC
+    Server ->> Client 2: MSG red timestamp Private message
+    Server ->> Client 2: ENDSYNC
+```
