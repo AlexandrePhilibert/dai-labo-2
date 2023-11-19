@@ -30,6 +30,14 @@ public class Sync extends Command {
 
     }
 
+    public String getTarget() {
+        return target;
+    }
+
+    public Instant getInstant() {
+        return instant;
+    }
+
     public String to() {
         return "SYNC " + target + " " + instant.getEpochSecond();
     }
