@@ -1,6 +1,6 @@
-package ch.heigvd.cli.instructions;
+package ch.heigvd.client.instructions;
 
-import ch.heigvd.cli.ClientState;
+import ch.heigvd.client.ClientState;
 import ch.heigvd.commands.Connect;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ public class Login extends Instruction {
     }
 
     @Override
-    public void exectue(ClientState state) throws IOException {
+    public void execute(ClientState state) throws IOException {
         state.getWriter().write(new Connect(username).toString());
     }
 }

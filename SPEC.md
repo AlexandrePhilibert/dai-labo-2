@@ -116,7 +116,7 @@ specially crafted messages, with the reserved username `system`, to indicate an 
 
 ```  
 MSG <group> <sender> <timespamp> <message>  
-```  
+```
 
 Server to Client
 
@@ -136,7 +136,7 @@ either:
 
 ### ENDSYNC
 
-```  
+```
 ENDSYNC  
 ```  
 

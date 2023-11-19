@@ -1,9 +1,9 @@
-package ch.heigvd.cli;
+package ch.heigvd.client;
 
-import ch.heigvd.cli.instructions.Exit;
-import ch.heigvd.cli.instructions.Instruction;
-import ch.heigvd.cli.instructions.Login;
-import ch.heigvd.cli.instructions.InstructionFactory;
+import ch.heigvd.client.instructions.Exit;
+import ch.heigvd.client.instructions.Instruction;
+import ch.heigvd.client.instructions.Login;
+import ch.heigvd.client.instructions.InstructionFactory;
 import picocli.CommandLine;
 
 import java.io.*;
@@ -48,14 +48,14 @@ public class ClientCommand implements Callable<Integer> {
             // Connect the user upon invocation
             InstructionFactory instructionFactory = new InstructionFactory();
             Instruction instruction = new Login(username);
-            instruction.exectue(state);
+            instruction.execute(state);
 
             do {
                 System.out.print(getPrompt());
 
                 String line = scanner.nextLine();
                 instruction = instructionFactory.parse(line);
-                instruction.exectue(state);
+                instruction.execute(state);
 
                 // TODO: Parse command and execute it
             } while (instruction.getClass() != Exit.class);

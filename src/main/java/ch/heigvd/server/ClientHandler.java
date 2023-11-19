@@ -12,9 +12,7 @@ import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ClientHandler implements Runnable {
     private final Logger logger;
@@ -59,7 +57,8 @@ public class ClientHandler implements Runnable {
                         out.write('\n');
                     }
                 } catch (ParseException e) {
-                    out.write("ERROR Invalid command\n");
+                    out.write(new Decline(DeclineReason.INVALID_COMMAND).to());
+                    out.write('\n');
                 }
                 out.flush();
             }

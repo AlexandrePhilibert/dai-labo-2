@@ -15,8 +15,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @CommandLine.Command(name = "server", mixinStandardHelpOptions = true, version = "0.0.1", description = "A server implementation of the CPT protocol")
-public class Server implements Callable<Integer> {
-    private static final Logger LOGGER = LogManager.getLogger(Server.class);
+public class ServerCommand implements Callable<Integer> {
+    private static final Logger LOGGER = LogManager.getLogger(ServerCommand.class);
 
     @CommandLine.Option(names = {"-p", "--port"}, description = "The port the server will listen to")
     private Integer port = 39168;
@@ -39,7 +39,7 @@ public class Server implements Callable<Integer> {
 
         ExecutorService executor = null;
         try (
-                ServerSocket serverSocket = new ServerSocket(port);
+                ServerSocket serverSocket = new ServerSocket(port)
         ) {
             executor = Executors.newFixedThreadPool(
                     threads
