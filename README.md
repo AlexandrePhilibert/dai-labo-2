@@ -4,7 +4,10 @@ This repository contains a TCP chat application that implements the CPT Protocol
 
 ## Protocol
 
-You can find more informations about the protocol being used you can check the [SPEC.md](./SPEC.md) file.
+You can find more information about the protocol being used you can check the [SPEC.md](./SPEC.md) file.
+
+TL;DR:
+The CPT protocol 
 
 ## Building the app
 
