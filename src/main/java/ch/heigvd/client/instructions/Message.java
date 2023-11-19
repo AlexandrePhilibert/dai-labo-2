@@ -1,6 +1,6 @@
-package ch.heigvd.cli.instructions;
+package ch.heigvd.client.instructions;
 
-import ch.heigvd.cli.ClientState;
+import ch.heigvd.client.ClientState;
 import ch.heigvd.commands.Send;
 
 import java.io.IOException;
@@ -13,7 +13,7 @@ public class Message extends Instruction {
     }
 
     @Override
-    public void exectue(ClientState state) throws IOException, RuntimeException {
+    public void execute(ClientState state) throws IOException, RuntimeException {
         if (state.getRecipient() == null) {
             throw new RuntimeException("Recipient must be set before sending message");
         }

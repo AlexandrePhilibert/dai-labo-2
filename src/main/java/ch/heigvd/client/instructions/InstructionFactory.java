@@ -1,4 +1,4 @@
-package ch.heigvd.cli.instructions;
+package ch.heigvd.client.instructions;
 
 public class InstructionFactory {
 

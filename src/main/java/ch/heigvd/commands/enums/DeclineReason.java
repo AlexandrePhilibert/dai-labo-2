@@ -9,6 +9,7 @@ public enum DeclineReason {
     ALREADY_LOGGED_IN("already_logged_in", "You are already connected."),
     UNSUPPORTED_COMMAND("unsupported_command", "Unsupported command."),
     NOT_CONNECTED("not_connected", "You need to be connected to run this command"),
+    INVALID_COMMAND("invalid_command", "Unknown command, or invalid command format"),
     CUSTOM()
     ;
 

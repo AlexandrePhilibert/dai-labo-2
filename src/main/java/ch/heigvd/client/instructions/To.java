@@ -1,6 +1,6 @@
-package ch.heigvd.cli.instructions;
+package ch.heigvd.client.instructions;
 
-import ch.heigvd.cli.ClientState;
+import ch.heigvd.client.ClientState;
 
 public class To extends Instruction {
 
@@ -11,7 +11,7 @@ public class To extends Instruction {
     }
 
     @Override
-    public void exectue(ClientState state) {
+    public void execute(ClientState state) {
         state.setRecipient(recipient);
     }
 }

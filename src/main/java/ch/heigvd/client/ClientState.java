@@ -1,4 +1,4 @@
-package ch.heigvd.cli;
+package ch.heigvd.client;
 
 import java.io.Writer;
 
