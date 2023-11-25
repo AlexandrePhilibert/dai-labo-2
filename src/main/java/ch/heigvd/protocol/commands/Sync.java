@@ -1,4 +1,4 @@
-package ch.heigvd.commands;
+package ch.heigvd.protocol.commands;
 
 import ch.heigvd.exceptions.ParseException;
 

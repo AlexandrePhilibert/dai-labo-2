@@ -1,6 +1,7 @@
 package ch.heigvd.client.instructions;
 
 import ch.heigvd.client.ClientState;
+import ch.heigvd.client.tui.Dialoguer;
 
 public class To extends Instruction {
 

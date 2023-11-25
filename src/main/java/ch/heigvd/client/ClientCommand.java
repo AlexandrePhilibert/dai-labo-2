@@ -43,7 +43,7 @@ public class ClientCommand implements Callable<Integer> {
             );
             Scanner scanner = new Scanner(System.in)
         ) {
-            state = new ClientState(writer);
+            state = new ClientState(writer, reader);
 
             // Connect the user upon invocation
             InstructionFactory instructionFactory = new InstructionFactory();

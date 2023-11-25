@@ -1,8 +1,6 @@
-package ch.heigvd.commands;
+package ch.heigvd.protocol.commands;
 
 import ch.heigvd.exceptions.ParseException;
-
-import java.time.Instant;
 
 public class EndSync extends Command {
     public static EndSync from(String parameters) throws ParseException {

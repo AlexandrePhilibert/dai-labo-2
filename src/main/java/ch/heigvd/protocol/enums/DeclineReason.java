@@ -1,4 +1,4 @@
-package ch.heigvd.commands.enums;
+package ch.heigvd.protocol.enums;
 
 import java.util.Arrays;
 

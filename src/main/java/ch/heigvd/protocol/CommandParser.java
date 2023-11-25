@@ -1,6 +1,6 @@
-package ch.heigvd.parser;
+package ch.heigvd.protocol;
 
-import ch.heigvd.commands.*;
+import ch.heigvd.protocol.commands.*;
 import ch.heigvd.exceptions.ParseException;
 
 public class CommandParser {
