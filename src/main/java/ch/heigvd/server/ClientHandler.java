@@ -20,7 +20,6 @@ public class ClientHandler implements Runnable {
     private final Socket clientSocket;
     private final String connectionId;
 
-
     private String username;
 
     public ClientHandler(Socket clientSocket) {
@@ -92,6 +91,7 @@ public class ClientHandler implements Runnable {
 
             return List.of(new Acknowledge());
         } else if (command instanceof Sync sync) {
+            logger.info("received a sync from {} for {}", this.username, sync.getTarget());
 
             List<Command> responses = new ArrayList<>(
                     GroupManager.getGroup(sync.getTarget())
