@@ -2,6 +2,7 @@ package ch.heigvd.client;
 
 import ch.heigvd.client.instructions.*;
 import ch.heigvd.client.tui.Dialoguer;
+import com.diogonunes.jcolor.Attribute;
 import picocli.CommandLine;
 
 import java.io.*;
@@ -10,7 +11,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.util.concurrent.*;
 
-@CommandLine.Command(name="client", description = "Starts the client")
+import static com.diogonunes.jcolor.Ansi.colorize;
+
+@CommandLine.Command(name = "client", description = "Starts the client")
 public class ClientCommand implements Callable<Integer> {
     @CommandLine.Option(names = {"-h", "--host"}, description = "The hostname", required = true)
     String hostname;
@@ -32,14 +35,14 @@ public class ClientCommand implements Callable<Integer> {
         // TODO: Gracefully handle error
 
         try (
-            Socket socket = new Socket(hostname, port);
-            BufferedReader reader = new BufferedReader(
-                new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8)
-            );
-            BufferedWriter writer = new BufferedWriter(
-                new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8)
-            );
-            Scanner scanner = new Scanner(System.in)
+                Socket socket = new Socket(hostname, port);
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8)
+                );
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8)
+                );
+                Scanner scanner = new Scanner(System.in)
         ) {
             state = new ClientState(writer, reader);
 
@@ -47,20 +50,25 @@ public class ClientCommand implements Callable<Integer> {
             InstructionFactory instructionFactory = new InstructionFactory();
             new Login(username).execute(state);
 
-            while(true) {
+            // Show the MOTD prompt
+            Dialoguer.showInfo("Welcome to the CPT client!");
+            Dialoguer.showInfo("For some help to get started, use the \\help command.");
+
+            while (true) {
                 System.out.print(getPrompt());
 
                 String line = scanner.nextLine();
                 for (Instruction instruction : instructionFactory.parse(line)) {
                     instruction.execute(state);
 
-                    if (instruction instanceof Exit ) {
+                    if (instruction instanceof Exit) {
                         return 0;
                     }
                 }
             }
         } catch (Exception e) {
             Dialoguer.showError("Could not connect to the server, please check the host and port and try again");
+            Dialoguer.showInfo("The encountered error was: " + colorize(e.getMessage(), Attribute.BRIGHT_WHITE_TEXT()));
         }
 
         return 0;

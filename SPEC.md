@@ -38,6 +38,17 @@ Begins a connection to the remote service, asking for a username in the required
 The server SHALL answer with an `DECLINE` command if the user is already taken, or IF additional requirements are set by
 the implementation. If not, the server MUST answer with an `ACCEPT` command.
 
+A username us of the following format:
+```
+valid_characters := a..z 0..9 - 
+username := >valid_characters<[3,64]
+```
+
+A server MAY support longer usernames.
+
+The username `system` MUST not be accepted by the server, as it is reserved for server commands.
+
+
 ### ACCEPT
 
 ```  
@@ -58,8 +69,8 @@ DECLINE <reason>
 
 Server to Client
 
-Signals that the server has declined the client request. The client SHOULD close the TCP connection upon the reception
-of this packet, and MAY inform the user of the error message.
+Signals that the server has declined the client request.
+The client MAY inform the user of the error message, and MAY retry at a later time.
 
 The reason parameter is required, and describes the reasoning of the denial.
 
@@ -87,6 +98,13 @@ Client to Server
 Sends a new `message` to a given `target`. The server MUST respond with either an ACK to confirm the message delivery,
 or a DECLINE to indicate an error
 
+The target is the following:
+
+- a username, to send a private message to another user
+- a group name, prefixed with `g_`, to send a message to a group. The server MAY implement access control
+  to prevent certain users to access a given group. In this case a `DECLINE` response MAY be sent to the client,
+  explaining the response.
+
 ### ACK
 
 ```  
@@ -107,7 +125,11 @@ SYNC <group> <after>
 
 Client to Server
 
-Requests the messages in a given `group` sent after the `after` timestamp.  
+Requests the messages in a given `group` sent after the `after` timestamp.
+
+The server MUST respond with all messages sent before the time of the SYNC command, and MAY send messages sent after
+that time, if concurrency allows for it.
+
 The server will respond with multiple `MSG` commands, and terminated with an `ENDSYNC` command.  
 The client MUST wait for the ENDSYNC message before resuming interaction with the server. The server MAY create
 specially crafted messages, with the reserved username `system`, to indicate an error to the client.
