@@ -1,6 +1,7 @@
 package ch.heigvd.client;
 
 import ch.heigvd.client.instructions.*;
+import ch.heigvd.client.tui.Dialoguer;
 import picocli.CommandLine;
 
 import java.io.*;
@@ -58,6 +59,10 @@ public class ClientCommand implements Callable<Integer> {
                     }
                 }
             }
+        } catch (Exception e) {
+            Dialoguer.showError("Could not connect to the server, please check the host and port and try again");
         }
+
+        return 0;
     }
 }
