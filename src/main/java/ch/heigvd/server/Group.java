@@ -1,7 +1,6 @@
 package ch.heigvd.server;
 
-import ch.heigvd.commands.Message;
-import ch.heigvd.commands.Send;
+import ch.heigvd.protocol.commands.Message;
 
 import java.time.Instant;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
-package ch.heigvd.commands;
+package ch.heigvd.protocol.commands;
 
-import ch.heigvd.commands.enums.DeclineReason;
+import ch.heigvd.protocol.enums.DeclineReason;
 import ch.heigvd.exceptions.ParseException;
 
 public class Decline extends Command {
@@ -37,6 +37,15 @@ public class Decline extends Command {
             return "DECLINE " + reason.getCode();
         } else {
             return "DECLINE " + customDeclineReason;
+        }
+    }
+
+
+    public String getMessage() {
+        if (reason != DeclineReason.CUSTOM) {
+            return reason.getDefaultMessage();
+        } else {
+            return customDeclineReason;
         }
     }
 }

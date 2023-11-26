@@ -1,9 +1,9 @@
 package ch.heigvd.server;
 
-import ch.heigvd.commands.*;
-import ch.heigvd.commands.enums.DeclineReason;
+import ch.heigvd.protocol.commands.*;
+import ch.heigvd.protocol.enums.DeclineReason;
 import ch.heigvd.exceptions.ParseException;
-import ch.heigvd.parser.CommandParser;
+import ch.heigvd.protocol.CommandParser;
 import ch.heigvd.server.utils.IdProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
