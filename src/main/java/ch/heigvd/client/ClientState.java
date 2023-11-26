@@ -7,6 +7,8 @@ import ch.heigvd.protocol.CommandParser;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Writer;
+import java.time.Instant;
+import java.util.HashMap;
 
 public class ClientState {
     private String recipient;
@@ -15,9 +17,12 @@ public class ClientState {
 
     private final BufferedReader reader;
 
+    private final HashMap<String, Instant> lastGroupSync;
+
     public ClientState(Writer writer, BufferedReader reader) {
         this.writer = writer;
         this.reader = reader;
+        this.lastGroupSync = new HashMap<>();
     }
 
     public String getRecipient() {
@@ -26,6 +31,14 @@ public class ClientState {
 
     public void setRecipient(String recipient) {
         this.recipient = recipient;
+    }
+
+    public void setLastSync(String group, Instant lastSync) {
+        lastGroupSync.put(group, lastSync);
+    }
+
+    public Instant getLastSync(String group) {
+        return lastGroupSync.getOrDefault(group, Instant.ofEpochSecond(0));
     }
 
     public void sendCommand(Command command) throws IOException {

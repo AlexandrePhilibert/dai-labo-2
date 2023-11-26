@@ -44,3 +44,9 @@ You can also specify the port using the `--port` argument.
 ```
 java -jar target/dai-labo-2-1.0-SNAPSHOT.jar client --username=alexandre --host=localhost
 ```
+
+Once you have successfully launched the client, you can use the `\help` command.
+
+```
+(None) > \help
+```

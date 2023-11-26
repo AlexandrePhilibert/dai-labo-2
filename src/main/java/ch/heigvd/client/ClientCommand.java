@@ -1,16 +1,14 @@
 package ch.heigvd.client;
 
-import ch.heigvd.client.instructions.Exit;
-import ch.heigvd.client.instructions.Instruction;
-import ch.heigvd.client.instructions.Login;
-import ch.heigvd.client.instructions.InstructionFactory;
+import ch.heigvd.client.instructions.*;
+import ch.heigvd.client.tui.Dialoguer;
 import picocli.CommandLine;
 
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
-import java.util.concurrent.Callable;
+import java.util.concurrent.*;
 
 @CommandLine.Command(name="client", description = "Starts the client")
 public class ClientCommand implements Callable<Integer> {
@@ -47,21 +45,23 @@ public class ClientCommand implements Callable<Integer> {
 
             // Connect the user upon invocation
             InstructionFactory instructionFactory = new InstructionFactory();
-            Instruction instruction = new Login(username);
-            instruction.execute(state);
+            new Login(username).execute(state);
 
-            do {
+            while(true) {
                 System.out.print(getPrompt());
 
                 String line = scanner.nextLine();
-                instruction = instructionFactory.parse(line);
-                instruction.execute(state);
+                for (Instruction instruction : instructionFactory.parse(line)) {
+                    instruction.execute(state);
 
-                // TODO: Parse command and execute it
-            } while (instruction.getClass() != Exit.class);
+                    if (instruction instanceof Exit ) {
+                        return 0;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Dialoguer.showError("Could not connect to the server, please check the host and port and try again");
         }
-
-
 
         return 0;
     }
