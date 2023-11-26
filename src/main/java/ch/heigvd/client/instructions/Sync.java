@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.util.Date;
 
 public class Sync extends Instruction {
+    private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
     String group;
 
     public Sync(String group) {
@@ -25,7 +26,7 @@ public class Sync extends Instruction {
             return;
         }
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+
 
         state.sendCommand(new ch.heigvd.protocol.commands.Sync(group, state.getLastSync(group)));
 
@@ -35,7 +36,7 @@ public class Sync extends Instruction {
                 response = state.receiveCommand();
 
                 if (response instanceof Message m) {
-                    System.out.println("[" + formatter.format(Date.from(m.getTimestamp())) + "] " +  m.getSender() + ": " + m.getMessage());
+                    System.out.println("[" + FORMATTER.format(Date.from(m.getTimestamp())) + "] " + m.getSender() + ": " + m.getMessage());
                 }
             } while (!(response instanceof EndSync));
 
