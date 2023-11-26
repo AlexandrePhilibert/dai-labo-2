@@ -13,6 +13,7 @@ public class InstructionFactory {
         return switch(instruction) {
             case "\\to" -> List.of(new To(l[1]));
             case "\\get" -> List.of(new Sync(l[1]));
+            case "\\help" -> List.of(new Help());
             case "\\exit" -> List.of(new Exit());
             default -> List.of(new Message(line));
         };

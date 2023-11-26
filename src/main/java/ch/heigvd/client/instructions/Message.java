@@ -26,6 +26,7 @@ public class Message extends Instruction {
         if (state.getRecipient() == null) {
             Dialoguer.showError("No recipient is set!");
             Dialoguer.showInfo("You can use the " + colorize("\\to", Attribute.BRIGHT_WHITE_TEXT()) + colorize(" command to select a recipient", Attribute.WHITE_TEXT()));
+            Dialoguer.showInfo("You can use the " + colorize("\\help", Attribute.BRIGHT_WHITE_TEXT()) + colorize(" command to... help you", Attribute.WHITE_TEXT()));
             return;
         }
 
