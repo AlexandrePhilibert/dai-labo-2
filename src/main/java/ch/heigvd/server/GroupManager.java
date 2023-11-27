@@ -8,4 +8,8 @@ public class GroupManager {
     public static Group getGroup(String name) {
         return groupMap.computeIfAbsent(name, Group::new);
     }
+
+    public static boolean exists(String name) {
+        return groupMap.containsKey(name);
+    }
 }

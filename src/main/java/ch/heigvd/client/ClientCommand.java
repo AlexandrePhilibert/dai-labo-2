@@ -31,9 +31,7 @@ public class ClientCommand implements Callable<Integer> {
     }
 
     @Override
-    public Integer call() throws RuntimeException, IOException {
-        // TODO: Gracefully handle error
-
+    public Integer call() throws RuntimeException {
         try (
                 Socket socket = new Socket(hostname, port);
                 BufferedReader reader = new BufferedReader(
