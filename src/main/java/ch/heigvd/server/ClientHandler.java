@@ -74,7 +74,13 @@ public class ClientHandler implements Runnable {
     private List<Command> apply(Command command) {
         if (!isConnected()) {
             if (command instanceof Connect connect) {
-                this.username = connect.getUsername();
+                if (GroupManager.exists(connect.getUsername())) {
+                    return List.of(new Decline(DeclineReason.USERNAME_TAKEN));
+                }
+
+                username = connect.getUsername();
+                GroupManager.getGroup(username);
+
                 return List.of(new Accept());
             } else {
                 return List.of(new Decline(DeclineReason.NOT_CONNECTED));

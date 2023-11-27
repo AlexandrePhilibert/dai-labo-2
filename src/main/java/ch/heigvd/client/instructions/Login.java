@@ -31,6 +31,7 @@ public class Login extends Instruction {
                 ErrorHelper.showServerDecline(decline);
             } else if (response instanceof Accept) {
                 Dialoguer.showSuccess("Logged in as " + colorize(username, Attribute.BRIGHT_WHITE_TEXT()) + colorize(" successfully!", Attribute.WHITE_TEXT()));
+                state.setLoggedIn(true);
             } else {
                 Dialoguer.showError("Unknown response received from the server! " + response.to());
             }

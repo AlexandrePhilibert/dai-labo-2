@@ -13,6 +13,8 @@ import java.util.HashMap;
 public class ClientState {
     private String recipient;
 
+    private boolean isLoggedIn;
+
     private final Writer writer;
 
     private final BufferedReader reader;
@@ -23,6 +25,7 @@ public class ClientState {
         this.writer = writer;
         this.reader = reader;
         this.lastGroupSync = new HashMap<>();
+        isLoggedIn = false;
     }
 
     public String getRecipient() {
@@ -31,6 +34,14 @@ public class ClientState {
 
     public void setRecipient(String recipient) {
         this.recipient = recipient;
+    }
+
+    public void setLoggedIn(boolean isLoggedIn) {
+        this.isLoggedIn = isLoggedIn;
+    }
+
+    public boolean getLoggedIn() {
+        return isLoggedIn;
     }
 
     public void setLastSync(String group, Instant lastSync) {
