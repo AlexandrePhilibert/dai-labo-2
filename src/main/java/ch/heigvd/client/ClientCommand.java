@@ -5,6 +5,7 @@ import ch.heigvd.client.tui.Dialoguer;
 import com.diogonunes.jcolor.Attribute;
 import picocli.CommandLine;
 
+import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -47,6 +48,11 @@ public class ClientCommand implements Callable<Integer> {
             // Connect the user upon invocation
             InstructionFactory instructionFactory = new InstructionFactory();
             new Login(username).execute(state);
+
+            if (!state.getLoggedIn()) {
+                Dialoguer.showError("Could not login, shutting off");
+                return 1;
+            }
 
             // Show the MOTD prompt
             Dialoguer.showInfo("Welcome to the CPT client!");
