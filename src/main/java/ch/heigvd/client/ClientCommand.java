@@ -5,7 +5,6 @@ import ch.heigvd.client.tui.Dialoguer;
 import com.diogonunes.jcolor.Attribute;
 import picocli.CommandLine;
 
-import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;

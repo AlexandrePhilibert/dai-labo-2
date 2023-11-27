@@ -1,9 +1,11 @@
 package ch.heigvd.client.instructions;
 
 import ch.heigvd.client.ClientState;
+import ch.heigvd.client.tui.Dialoguer;
 import ch.heigvd.client.tui.ErrorHelper;
 import ch.heigvd.exceptions.ParseException;
 import ch.heigvd.protocol.commands.Command;
+import ch.heigvd.protocol.commands.Decline;
 import ch.heigvd.protocol.commands.EndSync;
 import ch.heigvd.protocol.commands.Message;
 
@@ -34,6 +36,11 @@ public class Sync extends Instruction {
         try {
             do  {
                 response = state.receiveCommand();
+
+                if (response instanceof Decline d) {
+                    ErrorHelper.showServerDecline(d);
+                    return;
+                }
 
                 if (response instanceof Message m) {
                     System.out.println("[" + FORMATTER.format(Date.from(m.getTimestamp())) + "] " + m.getSender() + ": " + m.getMessage());

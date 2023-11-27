@@ -10,6 +10,7 @@ public enum DeclineReason {
     UNSUPPORTED_COMMAND("unsupported_command", "Unsupported command."),
     NOT_CONNECTED("not_connected", "You need to be connected to run this command"),
     INVALID_COMMAND("invalid_command", "Unknown command, or invalid command format"),
+    ACCESS_DENIED("access_denied", "You do not have the required rights to execute this command"),
     CUSTOM()
     ;
 

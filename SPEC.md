@@ -49,6 +49,17 @@ A server MAY support longer usernames.
 The username `system` MUST not be accepted by the server, as it is reserved for server commands.
 
 
+A username is of the following format:
+
+```
+valid_characters := a..z 0..9 - 
+username := >valid_characters<[3,64]
+```
+
+A server MAY support longer usernames.
+
+The username `system` MUST not be accepted by the server, as it is reserved for server commands.
+
 ### ACCEPT
 
 ```  
@@ -84,6 +95,7 @@ The server MUST use the default reasons described in the table below where appli
 | already_logged_in   | The user has already sent a CONNECT command. Changing suernames is not supported by the protocol |  
 | unsupported_command | The server does not support this command                                                         |
 | invalid_command     | Unknown command, or invalid command format                                                       |
+| access_denied       | The user does not have the required rights to execute this command                               |
 
 New values MAY be added in a future revision of this document.
 
