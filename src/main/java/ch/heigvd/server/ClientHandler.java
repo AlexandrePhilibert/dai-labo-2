@@ -97,7 +97,12 @@ public class ClientHandler implements Runnable {
 
             return List.of(new Acknowledge());
         } else if (command instanceof Sync sync) {
-            logger.info("received a sync from {} for {}", this.username, sync.getTarget());
+
+            if (!sync.getTarget().startsWith("g_") && !sync.getTarget().equals(username)) {
+                return List.of(new Decline(DeclineReason.ACCESS_DENIED));
+            }
+
+            logger.info("received a sync from {} for {}", username, sync.getTarget());
 
             List<Command> responses = new ArrayList<>(
                     GroupManager.getGroup(sync.getTarget())
